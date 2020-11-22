@@ -10,92 +10,94 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-
+// Init firebase SDK
 var db = firebase.firestore();
+var auth = firebase.auth();
+// End
 
+//Get Sign up data
 const signupEmail = document.getElementById('signupEmail');
 const signupPass = document.getElementById('signupPass');
 const phonenumb = document.getElementById('phonenumb');
 const fName = document.getElementById('fName');
 const lName = document.getElementById('lName');
 const signupBtn = document.getElementById('signupBtn');
+// End
+// Get Sign in data
 const signinBtn = document.getElementById('loginBtn');
 const loginEmail = document.getElementById('loginEmail');
 const loginPass = document.getElementById('loginPass');
-const uppanel = document.getElementById('signUp');
-const inpanel = document.getElementById('signIn');
+// End
+
+//Extra
 const container = document.getElementById('container');
+const signup = document.getElementById('signupPage');
+const inpanel = document.getElementById('signIn');
 
+
+//Sign in
 signinBtn.addEventListener('click', e => {
-
+    //Get sign in data
     const email = loginEmail.value;
     const pass = loginPass.value;
-    const auth = firebase.auth();
 
+    //Sign in user
+    auth.signInWithEmailAndPassword(email, pass)
+        .then(() => {
+            window.alert("Logged in")
+            var user = auth.currentUser;
+            if (user != null) {
+                user.providerData.forEach(function(profile) {
+                    console.log("  Provider-specific UID: " + profile.uid);
+                    console.log("  Name: " + profile.displayName);
+                    console.log("  Email: " + profile.email);
 
-    const promise = auth.signInWithEmailAndPassword(email, pass).then(() => {
-        window.alert("logged in")
-    })
-    promise.catch(e => window.alert("Please enter a valid account."))
+                    //Check if verified
+                    if (user.emailVerified == false) {
+                        alert("Email not yet verified");
+                    } else {
+                        alert("Email verified");
+                    }
+                });
+            }
+            console.log(user);
+        })
+        .catch(e => window.alert("Please enter a valid account."))
 })
 
-
-const auth = firebase.auth();
-signupBtn.addEventListener('submit', e => {
-    const uid = auth.currentuser.getToken();
+// Sign up 
+signupBtn.addEventListener('click', function() {
     const email = signupEmail.value;
     const pass = signupPass.value;
-
-    const createuser = auth.createUserWithEmailAndPassword(email, pass).then(cred => {
-
-        return db.collection('users').doc(cred.user.uid).set({
-            uid: uid.toString(),
-            first_name: fName.value,
-            last_name: lName.value,
-            phone_numb: phonenumb.value
-
-        })
-    }).then(() => {
-        window.alert("account added")
-    })
-    promise.catch(e => window.alert("mali gawa mo."))
-
-})
-
-firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
-    .then(function() {
-        window.alert('email sent')
-        window.localStorage.setItem('emailForSignIn', email);
-    })
-    .catch(function(error) {
-        // Some error occurred, you can inspect the code: error.code
-    });
-
-if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
-    // Additional state parameters can also be passed via URL.
-    // This can be used to continue the user's intended action before triggering
-    // the sign-in operation.
-    // Get the email if available. This should be available if the user completes
-    // the flow on the same device where they started it.
-    var email = window.localStorage.getItem('emailForSignIn');
-    if (!email) {
-        // User opened the link on a different device. To prevent session fixation
-        // attacks, ask the user to provide the associated email again. For example:
-        email = window.prompt('Please provide your email for confirmation');
+    alert("hey");
+    if (email != null || email != "" || pass != null || pass != "") {
+        // Register
+        auth.createUserWithEmailAndPassword(email, pass)
+            .then(cred => {
+                // Sign in user after creating account
+                auth.signInWithEmailAndPassword(email, pass)
+                    .then((user) => {
+                        // Signed in 
+                        // Send email verification
+                        var user = auth.currentUser; //Get current Signed-in user
+                        // Send Verification
+                        user.sendEmailVerification().then(function() {
+                            window.alert('Email verification sent.')
+                                // Email sent.
+                        }).catch(function(error) {
+                            console.log("Sending email veification error: " + error);
+                        });
+                        //End
+                    })
+                    .catch((error) => {
+                        var errorCode = error.code;
+                        var errorMessage = error.message;
+                        console.log(`Sign in error: ${errorCode} ${errorMessage}`);
+                    });
+            })
+            .catch(e => {
+                console.log(e)
+                alert("Enter valid data")
+            })
     }
-    // The client SDK will parse the code from the link for you.
-    firebase.auth().signInWithEmailLink(email, window.location.href)
-        .then(function(result) {
-            // Clear email from storage.
-            window.localStorage.removeItem('emailForSignIn');
-            // You can access the new user via result.user
-            // Additional user info profile not available via:
-            // result.additionalUserInfo.profile == null
-            // You can check if the user is new or existing:
-            // result.additionalUserInfo.isNewUser
-        })
-        .catch(function(error) {
-            // Some error occurred, you can inspect the code: error.code
-            // Common errors could be invalid email and invalid or expired OTPs.
-        });
-}
+})

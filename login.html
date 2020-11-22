@@ -10,38 +10,20 @@
 </head>
 
 <body>
+    <div class="form-container sign-in-container">
+        <form action="#">
+            <h1>Sign in</h1>
+            <input id="loginEmail" type="email" placeholder="Email" />
+            <input id="loginPass" type="password" placeholder="Password" />
+            <a href="#">Forgot your password?</a>
+            <button id="loginBtn" class="ac">Sign In</button>
+        </form>
+        <button onclick="signup.html">SIGNUP</button>
+    </div>
     <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-firestore.js"></script>
-
-    <div class="container" id="container">
-        <div class="form-container sign-up-container">
-            <form action="#">
-                <h1>Create Account</h1>
-                <input id="signupEmail" type="email" placeholder="Email" />
-                <input id="signupPass" type="password" placeholder="Password" />
-                <input id="fName" type="text" placeholder="First Name" />
-                <input id="lName" type="text" placeholder="Last Name" />
-                <input id="phonenumb" type="text" placeholder="Phone Number" />
-                <button id="signupBtn">Sign Up</button>
-            </form>
-        </div>
-        <div class="form-container sign-in-container">
-            <form action="#">
-                <h1>Sign in</h1>
-                <input id="loginEmail" type="email" placeholder="Email" />
-                <input id="loginPass" type="password" placeholder="Password" />
-                <a href="#">Forgot your password?</a>
-                <button id="loginBtn" class="ac">Sign In</button>
-            </form>
-        </div>
-        <script src="login.js"></script>
-
-
+    <script src="./login.js"></script>
 </body>
-
-
-
-
 
 </html>
