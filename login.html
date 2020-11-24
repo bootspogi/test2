@@ -1,29 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="login.css">
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="login.css" />
     <title>ALB</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="form-container sign-in-container">
-        <form action="#">
-            <h1>Sign in</h1>
-            <input id="loginEmail" type="email" placeholder="Email" />
-            <input id="loginPass" type="password" placeholder="Password" />
-            <a href="#">Forgot your password?</a>
-            <button id="loginBtn" class="ac">Sign In</button>
-        </form>
+      <form action="#">
+        <h1>Sign in</h1>
+        <input id="loginEmail" type="email" placeholder="Email" />
+        <input id="loginPass" type="password" placeholder="Password" />
+        <a href="#">Forgot your password?</a>
+        <button id="loginBtn" class="ac">Sign In</button>
+      </form>
     </div>
-    <button class="btn-lg btn-success" formaction="signup.html">SIGNUP</button>
+    <button class="btn-lg btn-success" onclick="gotoSignup()">SIGNUP</button>
+    <script>
+      function gotoSignup() {
+        if (confirm("Do you want to Sign up for a new account?")) {
+          window.location.replace("./signup.html");
+        }
+      }
+    </script>
     <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-firestore.js"></script>
     <script src="./login.js"></script>
-</body>
-
+  </body>
 </html>

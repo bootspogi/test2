@@ -31,7 +31,12 @@ signupBtn.addEventListener('click', function() {
         // Register
         auth.createUserWithEmailAndPassword(email, pass)
             .then(cred => {
-                // Sign in user after creating account
+                db.collection('users').doc(cred.user.uid).set({
+                        FirstName: fName.value,
+                        LastName: lName.value,
+                        PhoneNumber: phonenumb.value
+                    })
+                    // Sign in user after creating account
                 auth.signInWithEmailAndPassword(email, pass)
                     .then((user) => {
                         // Signed in 
