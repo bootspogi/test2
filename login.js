@@ -15,14 +15,7 @@ var db = firebase.firestore();
 var auth = firebase.auth();
 // End
 
-//Get Sign up data
-const signupEmail = document.getElementById('signupEmail');
-const signupPass = document.getElementById('signupPass');
-const phonenumb = document.getElementById('phonenumb');
-const fName = document.getElementById('fName');
-const lName = document.getElementById('lName');
-const signupBtn = document.getElementById('signupBtn');
-// End
+
 // Get Sign in data
 const signinBtn = document.getElementById('loginBtn');
 const loginEmail = document.getElementById('loginEmail');
@@ -63,41 +56,4 @@ signinBtn.addEventListener('click', e => {
             console.log(user);
         })
         .catch(e => window.alert("Please enter a valid account."))
-})
-
-// Sign up 
-signupBtn.addEventListener('click', function() {
-    const email = signupEmail.value;
-    const pass = signupPass.value;
-    alert("hey");
-    if (email != null || email != "" || pass != null || pass != "") {
-        // Register
-        auth.createUserWithEmailAndPassword(email, pass)
-            .then(cred => {
-                // Sign in user after creating account
-                auth.signInWithEmailAndPassword(email, pass)
-                    .then((user) => {
-                        // Signed in 
-                        // Send email verification
-                        var user = auth.currentUser; //Get current Signed-in user
-                        // Send Verification
-                        user.sendEmailVerification().then(function() {
-                            window.alert('Email verification sent.')
-                                // Email sent.
-                        }).catch(function(error) {
-                            console.log("Sending email veification error: " + error);
-                        });
-                        //End
-                    })
-                    .catch((error) => {
-                        var errorCode = error.code;
-                        var errorMessage = error.message;
-                        console.log(`Sign in error: ${errorCode} ${errorMessage}`);
-                    });
-            })
-            .catch(e => {
-                console.log(e)
-                alert("Enter valid data")
-            })
-    }
 })
