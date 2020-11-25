@@ -30,16 +30,15 @@ const navMove = () => {
 navMove();
 
 
-
-if (user == true) {
-    logout.addEventListener('click', () => {
-        firebase.auth().signOut().then(function() {
-            alert("Logged Out Succesfully");
-            window.location.replace("./login.html");
-        }).catch(function(error) {
-            console.log(error);
-        });
-    })
-} else {
-    // No user is signed in.
-}
+firebase.auth().onAuthStateChanged(function(currentUser) {
+    if (currentUser) {
+        logout.addEventListener('click', () => {
+            firebase.auth().signOut().then(function() {
+                alert("Logged Out Succesfully");
+                window.location = './login.html';
+            }).catch(function(error) {
+                console.log(error);
+            });
+        })
+    }
+});

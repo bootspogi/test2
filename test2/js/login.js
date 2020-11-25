@@ -23,7 +23,7 @@ const loginPass = document.getElementById('loginPass');
 // End
 
 //Extra
-const container = document.getElementById('container');
+const resetPass = document.getElementById('passReset');
 const signup = document.getElementById('signupPage');
 const inpanel = document.getElementById('signIn');
 
@@ -57,4 +57,15 @@ signinBtn.addEventListener('click', e => {
             console.log(user);
         })
         .catch(e => window.alert("Please enter a valid account."))
+})
+
+var emailAddress = email;
+
+resetPass.addEventListener('click', () => {
+
+    auth.sendPasswordResetEmail(emailAddress).then(function() {
+        alert("Reset Password link was sent to your email!")
+    }).catch(function(error) {
+        // An error happened.
+    });
 })
